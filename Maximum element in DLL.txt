@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* prev;
+    struct node* next;
+} *head;
+
+void create_DLL(int n);
+int max_Node();
+void display();
+
+int main() {
+    int n, max;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    create_DLL(n);
+    printf("Elements in the DLL are\n");
+    display();
+    max = max_Node(); // Store the result in max
+    printf("Maximum element is %d\n", max);
+    return 0;
+}
+
+void create_DLL(int n) {
+    struct node* newnode, * temp;
+    int data, i;
+    head = NULL; // Initialize head to NULL
+    for (i = 0; i < n; i++) { // Changed loop condition to "< n"
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &data);
+
+        newnode = (struct node*)malloc(sizeof(struct node));
+        if (newnode == NULL) {
+            printf("Unable to allocate memory\n");
+            break;
+        }
+
+        newnode->data = data;
+        newnode->prev = NULL;
+        newnode->next = NULL;
+
+        if (head == NULL) {
+            head = newnode;
+            temp = head;
+        }
+        else {
+            temp->next = newnode;
+            newnode->prev = temp;
+            temp = newnode;
+        }
+    }
+    printf("Doubly linked list created successfully\n");
+}
+
+int max_Node() {
+    struct node* current = head;
+    int max;
+    if (head == NULL) {
+        printf("List is empty\n");
+        return -1; // Return a value indicating an error or handle it differently
+    }
+    else {
+        max = head->data;
+        while (current != NULL) {
+            if (max < current->data) {
+                max = current->data;
+            }
+            current = current->next;
+        }
+        return max; // Return the maximum value
+    }
+}
+
+void display() {
+    struct node* temp = head;
+    if (head == NULL)
+        printf("List is empty\n");
+    else {
+        while (temp != NULL) {
+            printf("Data = %d\n", temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}

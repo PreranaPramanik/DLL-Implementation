@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node* prev;
+    struct node* next;
+} *head, *tail;
+void create_DLL(int n);
+void reverse_DLL();
+void display();
+int main() {
+    int n;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    create_DLL(n);
+
+    printf("Elements in the DLL are:\n");
+    display();
+
+    reverse_DLL();
+    printf("Reversed DLL is\n");
+    display();
+    return 0;
+}
+void create_DLL(int n) {
+    struct node *newnode, *temp;
+    int data, i;
+    head = NULL;
+    for (i = 0; i < n; i++) {
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &data);
+        newnode = (struct node*)malloc(sizeof(struct node));
+        if (newnode == NULL) {
+            printf("Unable to allocate memory\n");
+            break;
+        }
+        newnode->data = data;
+        newnode->prev = NULL;
+        newnode->next = NULL;
+        if (head == NULL) {
+            head = newnode;
+            temp = head;
+        } else {
+            temp->next = newnode;
+            newnode->prev = temp;
+            temp = newnode;
+        }
+    }
+    tail = temp; // Set the tail to the last node
+    printf("Doubly linked list created successfully\n");
+}
+void reverse_DLL() {
+    struct node *current, *temp;
+    current = head;
+    while (current != NULL) {
+        // Swap prev and next pointers
+        temp = current->prev;
+        current->prev = current->next;
+        current->next = temp;
+        current = current->prev; // Move to the next node
+    }
+    printf("DLL before reversing\n");
+    printf("First Data=%d\n",head->data);
+    printf("Last Data=%d\n",tail->data);
+    // Swap head and tail pointers
+    temp = head;
+    head = tail;
+    tail = temp;
+    printf("DLL after soting\n");
+    printf("First Data=%d\n",head->data);
+    printf("Last Data=%d\n",tail->data);
+}
+void display() {
+    struct node* temp = head;
+    if (temp == NULL) {
+        printf("List is empty\n");
+    } else {
+        while (temp != NULL) {
+            printf("Data = %d\n", temp->data);
+            temp = temp->next;
+        }
+    }
+}

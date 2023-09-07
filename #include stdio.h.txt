@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node* prev;
+    struct node* next;
+} *head;
+
+void create_DLL(int n);
+int sort_list();
+void display();
+
+int main() {
+    int n,sort;
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    create_DLL(n);
+    printf("Elements in the DLL are\n");
+    display();
+    printf("sorted list: ");
+    sort = sort_list();
+    return 0;
+}
+
+void create_DLL(int n) {
+    struct node* newnode, * temp;
+    int data, i;
+    head = NULL; // Initialize head to NULL
+    for (i = 0; i < n; i++) { // Changed loop condition to "< n"
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &data);
+
+        newnode = (struct node*)malloc(sizeof(struct node));
+        if (newnode == NULL) {
+            printf("Unable to allocate memory\n");
+            break;
+        }
+
+        newnode->data = data;
+        newnode->prev = NULL;
+        newnode->next = NULL;
+
+        if (head == NULL) {
+            head = newnode;
+            temp = head;
+        }
+        else {
+            temp->next = newnode;
+            newnode->prev = temp;
+            temp = newnode;
+        }
+    }
+    printf("Doubly linked list created successfully\n");
+}
+int sort_list()
+{
+    struct node *current = head, *index = NULL;
+    int temp,sort;
+    if(head == NULL) {
+        return 0;
+    }
+    else {
+        while(current!=NULL) {
+            if(current->data>index->data) {
+                temp = current->data;
+                current->data = index->data;
+                index->data = temp;
+            }
+            index = index->next;
+        }
+        current = current->next;
+    }
+    return sort;
+}
+
+
+void display() {
+    struct node* temp = head;
+    if (head == NULL)
+        printf("List is empty\n");
+    else {
+        while (temp != NULL) {
+            printf("Data = %d\n", temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}

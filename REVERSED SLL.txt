@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+} *head, *newnode, *temp;
+
+void creation(int n);
+void reverse();
+void display();
+
+int main() {
+    int n;
+
+    printf("Enter n: ");
+    scanf("%d", &n);
+
+    creation(n);
+
+    printf("Data in the list\n");
+    display();
+
+    printf("Reversed SLL is\n");
+    reverse();
+    display();
+
+    return 0;
+}
+
+void creation(int n) {
+    int data, i;
+
+    head = (struct node *)malloc(sizeof(struct node));
+    if (head == NULL) {
+        printf("Unable to allocate memory");
+    } else {
+        printf("Enter data of node 1: ");
+        scanf("%d", &data);
+        head->data = data;
+        head->next = NULL;
+        temp = head;
+        for (i = 2; i <= n; i++) {
+            newnode = (struct node *)malloc(sizeof(struct node));
+            if (newnode == NULL) {
+                printf("Unable to allocate memory");
+                break;
+            } else {
+                printf("Enter data of node %d: ", i);
+                scanf("%d", &data);
+                newnode->data = data;
+                newnode->next = NULL;
+                temp->next = newnode;
+                temp = temp->next;
+            }
+        }
+        printf("SINGLY LINKED LIST CREATED SUCCESSFULLY");
+    }
+    printf("\n\n");
+}
+
+void reverse() {
+    struct node *prevnode, *currentnode, *nextnode;
+    prevnode = NULL;
+    currentnode = nextnode = head;
+    while (nextnode != NULL) {
+        nextnode = nextnode->next;
+        currentnode->next = prevnode;
+        prevnode = currentnode;
+        currentnode = nextnode;
+    }
+    head = prevnode;
+}
+
+void display() {
+    if (head == NULL)
+        printf("List is empty\n");
+    else {
+        temp = head;
+        while (temp != NULL) {
+            printf("Data = %d\n", temp->data);
+            temp = temp->next;
+        }
+    }
+}
